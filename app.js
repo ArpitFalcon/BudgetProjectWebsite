@@ -68,7 +68,7 @@ var UIController = (function () {
 			return {
 				type: document.querySelector(DOMstrings.inputType).value, // Output - "inc" / "exp".
 				description: document.querySelector(DOMstrings.inputDescription).value,
-				value: document.querySelector(DOMstrings.inputValue).value,
+				value: parseFloat(document.querySelector(DOMstrings.inputValue).value),
 			};
 		},
 
@@ -132,22 +132,30 @@ var controller = (function (budgetCtrl, UICtrl) {
 		});
 	};
 
+	var updateBudget = function () {
+		// ToDo : 1. Calculate the budget
+		// Return the budget
+		// ToDo : 2. Display the budget on the UI
+	};
+
 	var ctrlAddItem = function () {
 		var input, newItem;
 
 		// ToDo : 1. Get the filled input data.
 		input = UICtrl.getinput();
 
-		// ToDo : 2. Add the item to the budget controller
-		newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+		if (input.description !== '' && !isNaN(input.value) && input.value > 0) {
+			// ToDo : 2. Add the item to the budget controller
+			newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
-		// ToDo : 3. Add the item to the UI
-		UICtrl.addListItem(newItem, input.type);
-		// Clear the fields after taking the value
-		UICtrl.clearFields();
+			// ToDo : 3. Add the item to the UI
+			UICtrl.addListItem(newItem, input.type);
+			// Clear the fields after taking the value
+			UICtrl.clearFields();
 
-		// ToDo : 4. Calculate the budget
-		// ToDo : 5. Display the budget on the UI
+			// ToDo : 4. Calculate and update budget
+			updateBudget();
+		}
 	};
 
 	return {
