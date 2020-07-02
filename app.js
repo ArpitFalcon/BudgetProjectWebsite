@@ -3,18 +3,40 @@ var budgetController = (function () {
 })();
 
 var UIController = (function () {
+	var DOMstrings = {
+		inputType: '.add__type',
+		inputDescription: '.add__description',
+		inputValue: '.add__value',
+		inputBtn: '.add__btn',
+	};
+
 	return {
 		getinput: function () {
 			return {
-				type: document.querySelector('.add__type').value, // Output - "inc" / "exp".
-				description: document.querySelector('.add__description').value,
-				value: document.querySelector('.add__value').value,
+				type: document.querySelector(DOMstrings.inputType).value, // Output - "inc" / "exp".
+				description: document.querySelector(DOMstrings.inputDescription).value,
+				value: document.querySelector(DOMstrings.inputValue).value,
 			};
+		},
+
+		getDOMstrings: function () {
+			return DOMstrings;
 		},
 	};
 })();
 
-var appController = (function (budgetCtrl, UICtrl) {
+var controller = (function (budgetCtrl, UICtrl) {
+	var setupEventListeners = function () {
+		var DOM = UICtrl.getDOMstrings();
+		document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
+
+		document.addEventListener('keypress', function (event) {
+			if (event.keyCode === 13 || event.which === 13) {
+				ctrlAddItem();
+			}
+		});
+	};
+
 	var ctrlAddItem = function () {
 		// ToDo : 1. Get the filled input data.
 		var input = UICtrl.getinput();
@@ -25,11 +47,13 @@ var appController = (function (budgetCtrl, UICtrl) {
 		// ToDo : 5. Display the budget on the UI
 	};
 
-	document.querySelector('.add__btn').addEventListener('click', ctrlAddItem);
-
-	document.addEventListener('keypress', function (event) {
-		if (event.keyCode === 13 || event.which === 13) {
-			ctrlAddItem();
-		}
-	});
+	return {
+		init: function () {
+			console.log('Application has started');
+			setupEventListeners();
+		},
+	};
 })(budgetController, UIController);
+
+// Only line of code that is going to be outside.
+controller.init();
